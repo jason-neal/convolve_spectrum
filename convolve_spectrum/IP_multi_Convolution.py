@@ -16,8 +16,11 @@ import matplotlib.pyplot as plt
 import multiprocess as mprocess
 import numpy as np
 from tqdm import tqdm
-
 from spectrum_overload import Spectrum
+
+
+from convolve_spectrum.IP_Convolution import wav_selector, unitary_Gauss, fast_convolve
+
 
 def setup_debug(debug_val=False):
     """Set debug level."""
@@ -26,55 +29,6 @@ def setup_debug(debug_val=False):
     else:
         logging.basicConfig(level=logging.WARNING, format='%(asctime)s %(levelname)s %(message)s')
     return None
-
-
-def wav_selector(wav, flux, wav_min, wav_max):
-    """Wavelenght selector.
-
-    If passed lists it will return lists.
-    If passed np arrays it will return arrays
-
-    """
-    wav = np.asarray(wav)
-    flux = np.asarray(flux)
-    # Super Fast masking with numpy
-    mask = (wav > wav_min) & (wav < wav_max)
-    wav_sel = wav[mask]
-    flux_sel = flux[mask]
-    return [wav_sel, flux_sel]
-
-
-def unitary_Gauss(x, center, fwhm):
-    """Gaussian_function of area=1.
-
-    p[0] = A;
-    p[1] = mean;
-    p[2] = fwhm;
-    """
-    sigma = np.abs(fwhm) / (2 * np.sqrt(2 * np.log(2)))
-    Amp = 1.0 / (sigma * np.sqrt(2 * np.pi))
-    tau = -((x - center) ** 2) / (2 * (sigma ** 2))
-    result = Amp * np.exp(tau)
-
-    return result
-
-
-def fast_convolve(wav_val, R, wav_extended, flux_extended, fwhm_lim):
-    """IP convolution multiplication step for a single wavelength value."""
-    fwhm = wav_val / R
-    # Mask of wavelength range within 5 fwhm of wav
-    index_mask = ((wav_extended > (wav_val - fwhm_lim * fwhm)) &
-                  (wav_extended < (wav_val + fwhm_lim * fwhm)))
-
-    flux_2convolve = flux_extended[index_mask]
-    # Gausian Instrument Profile for given resolution and wavelength
-    inst_profile = unitary_Gauss(wav_extended[index_mask], wav_val, fwhm)
-
-    sum_val = np.sum(inst_profile * flux_2convolve)
-    # Correct for the effect of convolution with non-equidistant postions
-    unitary_val = np.sum(inst_profile * np.ones_like(flux_2convolve))
-
-    return sum_val / unitary_val
 
 
 def wrapper_fast_convolve(args):
@@ -166,7 +120,7 @@ def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
         plt.legend(loc='best')
         plt.title(r"Convolution by an Instrument Profile ")
         plt.show()
-    return [wav_chip, flux_conv_res]
+    return wav_chip, flux_conv_res
 
 
 def IPconvolution(wav, flux, chip_limits, R, FWHM_lim=5.0, plot=True,

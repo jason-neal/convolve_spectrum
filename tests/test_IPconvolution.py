@@ -22,7 +22,6 @@ def test_wav_selector():
     assert isinstance(wav_selector(x_np, y_np, 1, 3)[0], np.ndarray)
     assert isinstance(wav_selector(x_np, y_np, 1, 3)[1], np.ndarray)
     assert wav_selector(x, y, 0, 3)[0] == [1, 2]
-    assert wav_selector(x, y, 0, 3)[0] == wav_selector_multi(x, y, 0, 3)[0]
 
 
 def test_fast_convolution():
@@ -36,7 +35,6 @@ def test_fast_convolution():
         assert type(fast_convolve(a_val, R, b, c, 5)) == np.float64
         assert fast_convolve(a_val, R, b, c, 5) == 1     # Test a flat input of 1s gives a flat ouput of 1s
         assert fast_convolve(a_val, R, b, 0 * c, 5) == 0     # Test a flat input of 1s gives a flat ouput of 1s
-        assert np.allclose(fast_convolve(a_val, R, b, c, 5), fast_convolve_multi(a_val, R, b, c, 5))
 
 
 def test_IPconvolution():
