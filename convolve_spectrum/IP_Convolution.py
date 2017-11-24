@@ -81,7 +81,7 @@ def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
     # Predefine array space
     flux_conv_res = np.empty_like(wav_chip, dtype="float64")
     counter = 0
-    base_val = len(wav_chip) // 20   # Adjust here to change % between reports
+    base_val = max([len(wav_chip) // 20, 1])   # Adjust here to change % between reports
 
     for n, wav in enumerate(wav_chip):
         # Put convolution value directly into the array
@@ -105,7 +105,7 @@ def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
         plt.legend(loc='best')
         plt.title(r"Convolution by an Instrument Profile ")
         plt.show()
-    return [wav_chip, flux_conv_res]
+    return wav_chip, flux_conv_res
 
 
 def IPconvolution(wav, flux, chip_limits, R, FWHM_lim=5.0, plot=True,
