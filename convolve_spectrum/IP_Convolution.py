@@ -14,16 +14,14 @@ import numpy as np
 def wav_selector(wav, flux, wav_min, wav_max):
     """Wavelenght selector.
 
-    If passed lists it will return lists.
-    If passed np arrays it will return arrays
+    Slice array to within wav_min and wav_max inclusive.
     """
     wav = np.asarray(wav)
     flux = np.asarray(flux)
-    # Super Fast masking with numpy
-    mask = (wav > wav_min) & (wav < wav_max)
+    mask = (wav >= wav_min) & (wav <= wav_max)
     wav_sel = wav[mask]
     flux_sel = flux[mask]
-    return [wav_sel, flux_sel]
+    return wav_sel, flux_sel
 
 
 def unitary_Gauss(x, center, fwhm):
