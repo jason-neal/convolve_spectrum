@@ -1,12 +1,13 @@
+
 import numpy as np
 import py.test
 
-from octotribble.Convolution.IP_Convolution import (IPconvolution, fast_convolve,
-                                                    ip_convolution, unitary_Gauss,
-                                                    wav_selector)
-from octotribble.Convolution.IP_multi_Convolution import fast_convolve as fast_convolve_multi
-from octotribble.Convolution.IP_multi_Convolution import ip_convolution as ip_multi_Convolution
-from octotribble.Convolution.IP_multi_Convolution import wav_selector as wav_selector_multi
+from convolve_spectrum.IP_Convolution import (IPconvolution, fast_convolve,
+                                              ip_convolution, unitary_Gauss,
+                                              wav_selector)
+from convolve_spectrum.IP_multi_Convolution import fast_convolve as fast_convolve_multi
+from convolve_spectrum.IP_multi_Convolution import ip_convolution as ip_multi_Convolution
+from convolve_spectrum.IP_multi_Convolution import wav_selector as wav_selector_multi
 
 
 def test_wav_selector():
