@@ -5,6 +5,7 @@
 from __future__ import division, print_function
 
 import logging
+import warnings
 from datetime import datetime as dt
 
 import matplotlib.pyplot as plt
@@ -113,8 +114,8 @@ def IPconvolution(wav, flux, chip_limits, R, FWHM_lim=5.0, plot=True,
     """Wrapper of ip_convolution for backwards compatibility.
     Lower case of variable name of FWHM.
     """
-    logging.warning("IPconvolution is depreciated, should use ip_convolution instead."
-                    "IPconvolution is still available for compatibility.")
+    warnings.warn("IPconvolution is depreciated, should use ip_convolution instead."
+                    "IPconvolution is still available for compatibility.", DeprecationWarning)
     return ip_convolution(wav, flux, chip_limits, R, fwhm_lim=FWHM_lim, plot=plot,
                           verbose=verbose)
 

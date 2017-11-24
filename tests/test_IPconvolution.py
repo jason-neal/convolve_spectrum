@@ -1,14 +1,14 @@
 
 import numpy as np
-import py.test
+import pytest
 
-from convolve_spectrum.IP_Convolution import (IPconvolution, fast_convolve,
-                                              ip_convolution, unitary_Gauss,
-                                              wav_selector)
-from convolve_spectrum.IP_multi_Convolution import fast_convolve as fast_convolve_multi
+from convolve_spectrum.IP_multi_Convolution import wav_selector
+from convolve_spectrum.IP_Convolution import (fast_convolve,
+                                              ip_convolution, unitary_Gauss)
 from convolve_spectrum.IP_multi_Convolution import ip_convolution as ip_multi_Convolution
-from convolve_spectrum.IP_multi_Convolution import wav_selector as wav_selector_multi
 
+from convolve_spectrum.IP_Convolution import IPconvolution 
+from convolve_spectrum.IP_multi_Convolution import IPconvolution as IPmulticonvolution
 
 def test_wav_selector():
     x = [1, 2, 3, 4, 6]
@@ -55,5 +55,15 @@ def test_ip_wrapper():
                   ip_convolution(a, b, [2140, 2165], R=50000, plot=False))
 
 
-if __name__ == "__main__":
-    test_fast_convolution()
+def test_IPconolution_depreciation():
+    a = np.linspace(2130, 2170, 1024)
+    b = np.linspace(2100, 2200, 1024)
+    with pytest.deprecated_call():
+        IPconvolution(a, b, [2140, 2165], R=50000, plot=False)
+
+
+def test_IPmulticonvolution_depreciation():
+    a = np.linspace(2130, 2170, 1024)
+    b = np.linspace(2100, 2200, 1024)
+    with pytest.deprecated_call():
+        IPmulticonvolution(a, b, [2140, 2165], R=50000, plot=False)
