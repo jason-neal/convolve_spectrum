@@ -26,4 +26,4 @@ The wavelength axis is reduced to *wav_limits* due to edge effecs in the convolu
 
 
 ## Notes
-The original version of this code was used for the IP component of [Figueira et. al. 2016](https://arxiv.org/abs/1511.07468) and explained in detail there.
+The original version of this code was used for the IP component of [Figueira et. al. 2016](https://arxiv.org/abs/1511.07468) and explained in detail there (page 3).
