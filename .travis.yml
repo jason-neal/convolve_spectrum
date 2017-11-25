@@ -29,7 +29,7 @@ install:
 
   - travis_retry pip install -r requirements/requirements.txt
   - travis_retry pip install -r requirements/test_requirements.txt
-  - python setup.py install
+  - python setup.py develop
 
 script:
   - pytest --cov=. --cov-report term-missing tests/ 
