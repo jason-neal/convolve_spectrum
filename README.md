@@ -23,3 +23,7 @@ Calculates the IP for every pixel/wavelength value individually (embarrassingly 
     convolved_wav, convolved_flux = ip_convolution(wav, flux, wav_limits, R, fwhm_lim=5.0) 
 ```
 The wavelength axis is reduced to *wav_limits* due to edge effecs in the convolution.
+
+
+## Notes
+The original version of this code was used for the IP component of [Figueira et. al. 2016](https://arxiv.org/abs/1511.07468) and explained in detail there.
