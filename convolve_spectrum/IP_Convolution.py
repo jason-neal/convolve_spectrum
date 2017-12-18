@@ -16,8 +16,17 @@ def wav_selector(wav, flux, wav_min, wav_max):
 
     Slice array to within wav_min and wav_max inclusive.
     """
+    assert not(np.isnan(wav_min)), "Lower wavelength band is NaN!"
+    assert not (np.isnan(wav_max)), "Upper wavelength band is NaN!"
+
     wav = np.asarray(wav)
     flux = np.asarray(flux)
+
+    # Remove NaN wavelengths
+    nan_mask = np.isnan(wav)
+    wav = wav[~nan_mask]
+    flux = flux[~nan_mask]
+    assert not np.any(np.isnan(wav))
     mask = (wav >= wav_min) & (wav <= wav_max)
     wav_sel = wav[mask]
     flux_sel = flux[mask]
