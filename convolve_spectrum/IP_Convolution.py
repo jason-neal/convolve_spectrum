@@ -119,9 +119,9 @@ def plot_convolution(wav_chip, flux_chip, flux_conv_res, R):
     plt.plot(wav_chip, flux_chip / np.max(flux_chip), color='k',
              linestyle="-", label="Original spectra")
     plt.plot(wav_chip, flux_conv_res / np.max(flux_conv_res), color='r',
-             linestyle="-", label="Spectrum observed at R={0}.".format(R))
+             linestyle="--", label="Spectrum observed at R={0}.".format(R))
     plt.legend(loc='best')
-    plt.title(r"Convolution by an Instrument Profile ")
+    plt.title(r"Convolution by an Instrument Profile")
     plt.show()
 
 
