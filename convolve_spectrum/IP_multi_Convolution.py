@@ -15,11 +15,10 @@ from datetime import datetime as dt
 import matplotlib.pyplot as plt
 import multiprocess as mprocess
 import numpy as np
-from tqdm import tqdm
 from spectrum_overload import Spectrum
+from tqdm import tqdm
 
-
-from convolve_spectrum.IP_Convolution import wav_selector, unitary_Gauss, fast_convolve
+from convolve_spectrum.IP_Convolution import wav_selector, unitary_Gauss, fast_convolve, plot_convolution
 
 
 def setup_debug(debug_val=False):
@@ -39,8 +38,9 @@ def wrapper_fast_convolve(args):
     """
     return fast_convolve(*args)
 
+
 def convolve_spectrum(spec, *args, **kwargs):
-    """Convovle a spectrum using ip_convolution.
+    """Convolve a spectrum using ip_convolution.
 
     ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
                        verbose=False, numProcs=None, progbar=True, debug=False)
@@ -52,7 +52,7 @@ def convolve_spectrum(spec, *args, **kwargs):
 
 def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
                    verbose=False, numProcs=None, progbar=True, debug=False):
-    """Spectral convolution which allows non-equidistance step values.
+    """Spectral convolution which allows non-equidistant step values.
 
     Parameters
     ----------
@@ -68,7 +68,7 @@ def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
     if verbose:
         """Verbose was turned on when doesn't do anything."""
         logging.warning("ip_convolution's unused 'verbose' parameter was enabled."
-                      " It is unused/depreciated so should be avoided.")
+                        " It is unused/depreciated so should be avoided.")
 
     setup_debug(debug_val=debug)
     # Turn into numpy arrays
@@ -80,7 +80,7 @@ def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
                                        chip_limits[1])
     # We need to calculate the fwhm at this value in order to set the starting
     # point for the convolution
-    fwhm_min = wav_chip[0] / R    # fwhm at the extremes of vector
+    fwhm_min = wav_chip[0] / R  # fwhm at the extremes of vector
     fwhm_max = wav_chip[-1] / R
 
     # Wide wavelength bin for the resolution_convolution
@@ -97,7 +97,7 @@ def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
     mprocPool = mprocess.Pool(processes=numProcs)
 
     args_generator = tqdm([[wav, R, wav_ext, flux_ext, fwhm_lim]
-                          for wav in wav_chip], disable=(not progbar))
+                           for wav in wav_chip], disable=(not progbar))
 
     flux_conv_res = np.array(mprocPool.map(wrapper_fast_convolve,
                                            args_generator))
@@ -121,9 +121,9 @@ def IPconvolution(wav, flux, chip_limits, R, FWHM_lim=5.0, plot=True,
     Lower case of variable name of FWHM.
     """
     warnings.warn("IPconvolution is depreciated, should use ip_convolution instead."
-                    "IPconvolution is still available for compatibility.", DeprecationWarning)
+                  "IPconvolution is still available for compatibility.", DeprecationWarning)
     return ip_convolution(wav, flux, chip_limits, R, fwhm_lim=FWHM_lim, plot=plot,
-                         verbose=verbose, numProcs=numProcs)
+                          verbose=verbose, numProcs=numProcs)
 
 
 if __name__ == "__main__":
