@@ -96,16 +96,8 @@ def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
           " {}.\n".format(timeEnd - timeInit))
 
     if plot:
-        plt.figure(1)
-        plt.xlabel(r"wavelength [ nm ])")
-        plt.ylabel(r"flux [counts] ")
-        plt.plot(wav_chip, flux_chip / np.max(flux_chip), color='k',
-                 linestyle="-", label="Original spectra")
-        plt.plot(wav_chip, flux_conv_res / np.max(flux_conv_res), color='r',
-                 linestyle="-", label="Spectrum observed at R={0}.".format(R))
-        plt.legend(loc='best')
-        plt.title(r"Convolution by an Instrument Profile ")
-        plt.show()
+        plot_convolution(wav_chip, flux_chip, flux_conv_res, R)
+
     return wav_chip, flux_conv_res
 
 
@@ -118,6 +110,19 @@ def IPconvolution(wav, flux, chip_limits, R, FWHM_lim=5.0, plot=True,
                     "IPconvolution is still available for compatibility.", DeprecationWarning)
     return ip_convolution(wav, flux, chip_limits, R, fwhm_lim=FWHM_lim, plot=plot,
                           verbose=verbose)
+
+
+def plot_convolution(wav_chip, flux_chip, flux_conv_res, R):
+    plt.figure(1)
+    plt.xlabel(r"wavelength [ nm ])")
+    plt.ylabel(r"flux [counts] ")
+    plt.plot(wav_chip, flux_chip / np.max(flux_chip), color='k',
+             linestyle="-", label="Original spectra")
+    plt.plot(wav_chip, flux_conv_res / np.max(flux_conv_res), color='r',
+             linestyle="-", label="Spectrum observed at R={0}.".format(R))
+    plt.legend(loc='best')
+    plt.title(r"Convolution by an Instrument Profile ")
+    plt.show()
 
 
 if __name__ == "__main__":
