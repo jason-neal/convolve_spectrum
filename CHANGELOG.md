@@ -1,6 +1,6 @@
 ### Version 0.2
 24-Nov-2017
-- Separate out convoution into separate package.
+- Separate out convolution into separate package.
 
 # 0.1
 # Changes after 1-Nov-2017

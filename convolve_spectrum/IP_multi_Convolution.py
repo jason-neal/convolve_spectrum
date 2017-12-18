@@ -12,7 +12,6 @@ import logging
 import warnings
 from datetime import datetime as dt
 
-import matplotlib.pyplot as plt
 import multiprocess as mprocess
 import numpy as np
 from spectrum_overload import Spectrum
@@ -56,17 +55,29 @@ def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
 
     Parameters
     ----------
+    wav:
+        Wavelength
+    flux:
+        Flux of spectrum
+    chip_limits: List[float, float]
+        Wavelength limits of region to return after convolution.
+    R:
+        Resolution to convolve to.
+    fwhm_lim:
+        Number of FWHM of convolution kernel to use as edge buffer.
+    plot: bool
+        Display the spectrum, and convolved result.
     verbose: bool
         Does nothing anymore...
     numProcs: int
-        NUmber of processes to use. Defualt=None selects cpu_count - 1.
+        NUmber of processes to use. Default=None selects cpu_count - 1.
     progbar: bool
         Enable the tqdm progress bar. Default=True.
     debug: bool
         Enable logging debug information. Default=False.
-    """
+     """
     if verbose:
-        """Verbose was turned on when doesn't do anything."""
+        # Verbose was turned on when doesn't do anything.
         logging.warning("ip_convolution's unused 'verbose' parameter was enabled."
                         " It is unused/depreciated so should be avoided.")
 
@@ -90,7 +101,7 @@ def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
 
     logging.debug("Starting the Resolution convolution...")
 
-    # multiprocessing part
+    # Multiprocessing part
     if numProcs is None:
         numProcs = mprocess.cpu_count() - 1
 
@@ -127,11 +138,11 @@ def IPconvolution(wav, flux, chip_limits, R, FWHM_lim=5.0, plot=True,
 
 
 if __name__ == "__main__":
-    # Example useage of this convolution
+    # Example usage of this convolution
     wav = np.linspace(2040, 2050, 30000)
     flux = (np.ones_like(wav) - unitary_Gauss(wav, 2045, .6) -
             unitary_Gauss(wav, 2047, .9))
-    # Range in which to have the convoled values. Be careful of the edges!
+    # Range in which to have the convolved values. Be careful of the edges!
     chip_limits = [2042, 2049]
 
     R = 1000

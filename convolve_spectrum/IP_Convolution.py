@@ -7,7 +7,6 @@ from __future__ import division, print_function
 import warnings
 from datetime import datetime as dt
 
-import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import pyplot as plt
 
@@ -137,4 +136,3 @@ if __name__ == "__main__":
     convolved_wav, convolved_flux = ip_convolution(wav, flux, chip_limits, R,
                                                    fwhm_lim=5.0, plot=True,
                                                    verbose=True)
-

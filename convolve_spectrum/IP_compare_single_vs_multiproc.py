@@ -17,7 +17,7 @@ from tqdm import tqdm
 
 
 def wav_selector(wav, flux, wav_min, wav_max):
-    """Wavelenght selector.
+    """Wavelength selector.
 
     If passed lists it will return lists.
     If passed np arrays it will return arrays
@@ -55,11 +55,11 @@ def fast_convolve(wav_val, R, wav_extended, flux_extended, fwhm_lim):
                   (wav_extended < (wav_val + fwhm_lim * fwhm)))
 
     flux_2convolve = flux_extended[index_mask]
-    # Gausian Instrument Profile for given resolution and wavelength
+    # Gaussian Instrument Profile for given resolution and wavelength
     IP = unitary_Gauss(wav_extended[index_mask], wav_val, fwhm)
 
     sum_val = np.sum(IP * flux_2convolve)
-    # Correct for the effect of convolution with non-equidistant postions
+    # Correct for the effect of convolution with non-equidistant positions
     unitary_val = np.sum(IP * np.ones_like(flux_2convolve))
 
     return sum_val / unitary_val
@@ -76,7 +76,7 @@ def wrapper_fast_convolve(args):
 
 def multi_ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
                          verbose=True, numProcs=None):
-    """Spectral convolution which allows non-equidistance step values."""
+    """Spectral convolution which allows non-equidistant step values."""
     timeInit = dt.now()
 
     # Make sure they are numpy arrays
@@ -111,7 +111,7 @@ def multi_ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
 
     mprocPool.close()
     timeEnd = dt.now()
-    print("Multi-Proc convolution has been compelted in "
+    print("Multi-Proc convolution has been completed in "
           "{} using {}/{} cores.\n".format(timeEnd - timeInit, numProcs,
                                            mprocess.cpu_count()))
 
@@ -132,7 +132,7 @@ def multi_ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
 
 def single_ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0,
                           plot=True, verbose=True):
-    """Spectral convolution which allows non-equidistance step values."""
+    """Spectral convolution which allows non-equidistant step values."""
     timeInit = dt.now()
 
     # Make sure they are numpy arrays
@@ -161,7 +161,7 @@ def single_ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0,
         # Put convolution value directly into the array
         flux_conv_res[n] = fast_convolve(wav, R, wav_ext, flux_ext, fwhm_lim)
         if (n % base_val == 0) and verbose:
-            counter = counter + 5  # And ajust here to change % between reports
+            counter = counter + 5  # And adjust here to change % between reports
             print("Resolution Convolution at {0}%%...".format(counter))
 
     timeEnd = dt.now()
@@ -183,12 +183,12 @@ def single_ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0,
 
 
 if __name__ == "__main__":
-    # Example useage of this convolution
+    # Example usage of this convolution
     wav = np.linspace(2040, 2050, 20000)
     flux = (np.ones_like(wav) - unitary_Gauss(wav, 2045, .6) -
             unitary_Gauss(wav, 2047, .9))
 
-    # range in which to have the convoled values. Be careful of the edges!
+    # range in which to have the convolved values. Be careful of the edges!
     chip_limits = [2042, 2049]
     R = 2000
     single_convolved_wav, single_convolved_flux = single_ip_convolution(wav, flux, chip_limits, R,
