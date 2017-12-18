@@ -91,3 +91,7 @@ def test_IPmulticonvolution_depreciation():
     b = np.linspace(2100, 2200, 1024)
     with pytest.deprecated_call():
         IPmulticonvolution(a, b, [2140, 2165], R=50000, plot=False)
+
+
+if __name__ == '__main__':
+    pytest.main(args=[__file__])
