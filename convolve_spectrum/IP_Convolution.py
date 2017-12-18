@@ -120,16 +120,16 @@ def IPconvolution(wav, flux, chip_limits, R, FWHM_lim=5.0, plot=True,
                           verbose=verbose)
 
 
-def plot_convolution(wav_chip, flux_chip, flux_conv_res, R):
+def plot_convolution(wav_chip, flux_chip, flux_conv_res, res):
     plt.figure(1)
-    plt.xlabel(r"wavelength [ nm ])")
-    plt.ylabel(r"flux [counts] ")
+    plt.xlabel(r"Wavelength [ nm ])")
+    plt.ylabel(r"Normalized Flux [counts] ")
     plt.plot(wav_chip, flux_chip / np.max(flux_chip), color='k',
-             linestyle="-", label="Original spectra")
+             linestyle="-", label="Original")
     plt.plot(wav_chip, flux_conv_res / np.max(flux_conv_res), color='r',
-             linestyle="--", label="Spectrum observed at R={0}.".format(R))
+             linestyle="--", label="Convolved")
     plt.legend(loc='best')
-    plt.title(r"Convolution by an Instrument Profile")
+    plt.title(r"Convolution by an Instrument Profile with R={0}".format(res))
     plt.show()
 
 
