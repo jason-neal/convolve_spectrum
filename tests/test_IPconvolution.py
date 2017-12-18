@@ -1,4 +1,4 @@
-from hypothesis import given, example
+from hypothesis import given
 import hypothesis.strategies as st
 import numpy as np
 import pytest
@@ -45,7 +45,7 @@ def test_wav_selector_with_nans_and_infs(wav, wav_min, wav_max):
 def test_wav_selector_with_nans_inputs(wav, wav_min, wav_max):
     y = np.copy(wav)
     with pytest.raises(AssertionError):
-        wav2, y2 = wav_selector(wav, y, wav_min, wav_max)
+        wav_selector(wav, y, wav_min, wav_max)
 
 
 def test_fast_convolution():
