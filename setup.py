@@ -1,6 +1,3 @@
-# Setup file for equanimousoctotribble
-
-
 import os
 # from setuptools.command.test import test as TestCommand
 # To use a consistent encoding
@@ -10,13 +7,7 @@ from setuptools import find_packages, setup
 
 long_description = " "
 
-
 base_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)))
-
-# https://www.reddit.com/r/Python/comments/3uzl2a/setuppy_requirementstxt_or_a_combination/
-# Cannot use when spectrum_overload is a github directory
-# with open('requirements/requirements.txt') as f:
-#    requirements = f.read().splitlines()
 
 setup(
     name='convolve_spectrum',
@@ -26,7 +17,7 @@ setup(
     # https://packaging.python.org/en/latest/single_source_version.html
     version="0.2",
 
-    description='Spectrum convolution that handles uneven wavlengths.',
+    description='Spectrum convolution that handles uneven wavelengths.',
     long_description=long_description,
 
     # The project's main homepage.
@@ -46,6 +37,7 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Natural Language :: English',
     ],
 
@@ -77,7 +69,7 @@ setup(
     extras_require={
         'dev': ['check-manifest'],
         'test': ['coverage', 'pytest', 'pytest-cov', 'python-coveralls', 'hypothesis'],
-        'docs': ['sphinx >= 1.4', 'sphinx_rtd_theme',]
+        'docs': ['sphinx >= 1.4', 'sphinx_rtd_theme', ]
     },
 
     # If there are data files included in your packages that need to be

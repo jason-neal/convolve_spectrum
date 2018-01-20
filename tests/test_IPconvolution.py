@@ -32,8 +32,8 @@ def test_fast_convolution():
         # print(type(fast_convolve(a_val, R, b, c, 5)))
         # print(isinstance(fast_convolve(a_val, R, b, c, 5), np.float64))
         assert type(fast_convolve(a_val, R, b, c, 5)) == np.float64
-        assert fast_convolve(a_val, R, b, c, 5) == 1     # Test a flat input of 1s gives a flat ouput of 1s
-        assert fast_convolve(a_val, R, b, 0 * c, 5) == 0     # Test a flat input of 1s gives a flat ouput of 1s
+        assert fast_convolve(a_val, R, b, c, 5) == 1     # Test a flat input of 1s gives a flat output of 1s
+        assert fast_convolve(a_val, R, b, 0 * c, 5) == 0     # Test a flat input of 1s gives a flat output of 1s
 
 # TODO: A result that is not just ones.
 def test_ip_convolution():
@@ -53,7 +53,7 @@ def test_ip_wrapper():
                   ip_convolution(a, b, [2140, 2165], R=50000, plot=False))
 
 
-def test_IPconolution_depreciation():
+def test_IPconvolution_depreciation():
     a = np.linspace(2130, 2170, 1024)
     b = np.linspace(2100, 2200, 1024)
     with pytest.deprecated_call():

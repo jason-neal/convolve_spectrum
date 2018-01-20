@@ -1,5 +1,5 @@
 # Test convolving to different resolutions
-# Test the effect of convolving straight to 20000 and convolving first to an intermediate resolution say 80000.
+# Test the effect of convolution straight to 20000 and convolution first to an intermediate resolution say 80000.
 
 
 import matplotlib.pyplot as plt
@@ -16,7 +16,7 @@ def main():
     flux = (np.ones_like(wav) - unitary_Gauss(wav, 2045, fwhm) -
             unitary_Gauss(wav, 2047, fwhm))
 
-    # range in which to have the convoled values. Be careful of the edges!
+    # range in which to have the convolved values. Be careful of the edges!
     chip_limits = [2042, 2049]
 
     # Convolution to 80k
@@ -49,7 +49,6 @@ def main():
                                        plot=False, verbose=True)
 
     # Plot the results
-
     plt.figure(1)
     plt.xlabel(r"wavelength [nm])")
     plt.ylabel(r"flux [counts] ")
@@ -70,5 +69,5 @@ def main():
 
 
 if __name__ == "__main__":
-    # The IPcovolution fails if it is not run inside __name__ == "__main__"
+    # The IPconvolution fails if it is not run inside __name__ == "__main__"
     main()

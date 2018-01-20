@@ -13,7 +13,7 @@ import numpy as np
 
 
 def wav_selector(wav, flux, wav_min, wav_max):
-    """Wavelenght selector.
+    """Wavelength selector.
 
     Slice array to within wav_min and wav_max inclusive.
     """
@@ -34,7 +34,7 @@ def unitary_Gauss(x, center, fwhm):
     """
     sigma = np.abs(fwhm) / (2 * np.sqrt(2 * np.log(2)))
     Amp = 1.0 / (sigma * np.sqrt(2 * np.pi))
-    tau = -((x - center)**2) / (2 * (sigma**2))
+    tau = -((x - center) ** 2) / (2 * (sigma ** 2))
     result = Amp * np.exp(tau)
 
     return result
@@ -52,7 +52,7 @@ def fast_convolve(wav_val, R, wav_extended, flux_extended, fwhm_lim):
     inst_profile = unitary_Gauss(wav_extended[index_mask], wav_val, fwhm)
 
     sum_val = np.sum(inst_profile * flux_2convolve)
-    # Correct for the effect of convolution with non-equidistant postions
+    # Correct for the effect of convolution with non-equidistant positions
     unitary_val = np.sum(inst_profile * np.ones_like(flux_2convolve))
 
     return sum_val / unitary_val
@@ -60,7 +60,7 @@ def fast_convolve(wav_val, R, wav_extended, flux_extended, fwhm_lim):
 
 def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
                    verbose=True):
-    """Spectral convolution which allows non-equidistance step values."""
+    """Spectral convolution which allows non-equidistant step values."""
     # Make sure they are numpy arrays
     wav = np.asarray(wav, dtype='float64')
     flux = np.asarray(flux, dtype='float64')
@@ -70,7 +70,7 @@ def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
                                        chip_limits[1])
     # We need to calculate the fwhm at this value in order to set the starting
     # point for the convolution
-    fwhm_min = wav_chip[0] / R    # fwhm at the extremes of vector
+    fwhm_min = wav_chip[0] / R  # fwhm at the extremes of vector
     fwhm_max = wav_chip[-1] / R
 
     # Wide wavelength bin for the resolution_convolution
@@ -82,13 +82,13 @@ def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
     # Predefine array space
     flux_conv_res = np.empty_like(wav_chip, dtype="float64")
     counter = 0
-    base_val = max([len(wav_chip) // 20, 1])   # Adjust here to change % between reports
+    base_val = max([len(wav_chip) // 20, 1])  # Adjust here to change % between reports
 
     for n, wav in enumerate(wav_chip):
         # Put convolution value directly into the array
         flux_conv_res[n] = fast_convolve(wav, R, wav_ext, flux_ext, fwhm_lim)
         if (n % base_val == 0) and verbose:
-            counter = counter + 5  # And ajust here to change % between reports
+            counter = counter + 5  # And adjust here to change % between reports
             print("Resolution Convolution at {0}%%...".format(counter))
 
     timeEnd = dt.now()
@@ -115,17 +115,17 @@ def IPconvolution(wav, flux, chip_limits, R, FWHM_lim=5.0, plot=True,
     Lower case of variable name of FWHM.
     """
     warnings.warn("IPconvolution is depreciated, should use ip_convolution instead."
-                    "IPconvolution is still available for compatibility.", DeprecationWarning)
+                  "IPconvolution is still available for compatibility.", DeprecationWarning)
     return ip_convolution(wav, flux, chip_limits, R, fwhm_lim=FWHM_lim, plot=plot,
                           verbose=verbose)
 
 
 if __name__ == "__main__":
-    # Example useage of this convolution
+    # Example usage of this convolution
     wav = np.linspace(2040, 2050, 30000)
     flux = (np.ones_like(wav) - unitary_Gauss(wav, 2045, .6) -
             unitary_Gauss(wav, 2047, .9))
-    # Range in which to have the convoled values. Be careful of the edges!
+    # Range in which to have the convolved values. Be careful of the edges!
     chip_limits = [2042, 2049]
 
     R = 1000
