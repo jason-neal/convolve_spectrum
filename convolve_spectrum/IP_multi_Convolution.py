@@ -12,14 +12,12 @@ import logging
 import warnings
 from datetime import datetime as dt
 
-import matplotlib.pyplot as plt
 import multiprocess as mprocess
 import numpy as np
-from tqdm import tqdm
 from spectrum_overload import Spectrum
+from tqdm import tqdm
 
-from convolve_spectrum.IP_Convolution import wav_selector, unitary_Gauss, fast_convolve
-
+from convolve_spectrum.IP_Convolution import wav_selector, unitary_Gauss, fast_convolve, plot_convolution
 
 def setup_debug(debug_val=False):
     """Set debug level."""
@@ -52,21 +50,33 @@ def convolve_spectrum(spec, *args, **kwargs):
 
 def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
                    verbose=False, numProcs=None, progbar=True, debug=False):
-    """Spectral convolution which allows non-equidistance step values.
+    """Spectral convolution which allows non-equidistant step values.
 
     Parameters
     ----------
+    wav:
+        Wavelength
+    flux:
+        Flux of spectrum
+    chip_limits: List[float, float]
+        Wavelength limits of region to return after convolution.
+    R:
+        Resolution to convolve to.
+    fwhm_lim:
+        Number of FWHM of convolution kernel to use as edge buffer.
+    plot: bool
+        Display the spectrum, and convolved result.
     verbose: bool
         Does nothing anymore...
     numProcs: int
-        NUmber of processes to use. Defualt=None selects cpu_count - 1.
+        NUmber of processes to use. Default=None selects cpu_count - 1.
     progbar: bool
         Enable the tqdm progress bar. Default=True.
     debug: bool
         Enable logging debug information. Default=False.
-    """
+     """
     if verbose:
-        """Verbose was turned on when doesn't do anything."""
+        # Verbose was turned on when doesn't do anything.
         logging.warning("ip_convolution's unused 'verbose' parameter was enabled."
                         " It is unused/depreciated so should be avoided.")
 
@@ -90,7 +100,7 @@ def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
 
     logging.debug("Starting the Resolution convolution...")
 
-    # multiprocessing part
+    # Multiprocessing part
     if numProcs is None:
         numProcs = mprocess.cpu_count() - 1
 
@@ -109,17 +119,9 @@ def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
                                                    numProcs,
                                                    mprocess.cpu_count()))
 
-    if (plot):
-        plt.figure(1)
-        plt.xlabel(r"wavelength [ nm ])")
-        plt.ylabel(r"flux [counts] ")
-        plt.plot(wav_chip, flux_chip / np.max(flux_chip), color='k',
-                 linestyle="-", label="Original spectra")
-        plt.plot(wav_chip, flux_conv_res / np.max(flux_conv_res), color='r',
-                 linestyle="-", label="Spectrum observed at R={0}.".format(R))
-        plt.legend(loc='best')
-        plt.title(r"Convolution by an Instrument Profile ")
-        plt.show()
+    if plot:
+        plot_convolution(wav_chip, flux_chip, flux_conv_res, R)
+
     return wav_chip, flux_conv_res
 
 

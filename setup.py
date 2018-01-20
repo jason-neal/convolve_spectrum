@@ -1,12 +1,10 @@
 import os
-# from setuptools.command.test import test as TestCommand
-# To use a consistent encoding
-from codecs import open
 
 from setuptools import find_packages, setup
 
-long_description = " "
+# from setuptools.command.test import test as TestCommand
 
+long_description = " "
 base_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)))
 
 setup(

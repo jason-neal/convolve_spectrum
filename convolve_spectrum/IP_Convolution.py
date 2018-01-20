@@ -4,12 +4,11 @@
 
 from __future__ import division, print_function
 
-import logging
 import warnings
 from datetime import datetime as dt
 
-import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib import pyplot as plt
 
 
 def wav_selector(wav, flux, wav_min, wav_max):
@@ -17,8 +16,17 @@ def wav_selector(wav, flux, wav_min, wav_max):
 
     Slice array to within wav_min and wav_max inclusive.
     """
+    assert not(np.isnan(wav_min)), "Lower wavelength band is NaN!"
+    assert not (np.isnan(wav_max)), "Upper wavelength band is NaN!"
+
     wav = np.asarray(wav)
     flux = np.asarray(flux)
+
+    # Remove NaN wavelengths
+    nan_mask = np.isnan(wav)
+    wav = wav[~nan_mask]
+    flux = flux[~nan_mask]
+    assert not np.any(np.isnan(wav))
     mask = (wav >= wav_min) & (wav <= wav_max)
     wav_sel = wav[mask]
     flux_sel = flux[mask]
@@ -30,7 +38,7 @@ def unitary_Gauss(x, center, fwhm):
 
     p[0] = A;
     p[1] = mean;
-    p[2] = fwhm;
+    p[2] = full with at half maximum (fwhm);
     """
     sigma = np.abs(fwhm) / (2 * np.sqrt(2 * np.log(2)))
     Amp = 1.0 / (sigma * np.sqrt(2 * np.pi))
@@ -48,7 +56,7 @@ def fast_convolve(wav_val, R, wav_extended, flux_extended, fwhm_lim):
                   (wav_extended < (wav_val + fwhm_lim * fwhm)))
 
     flux_2convolve = flux_extended[index_mask]
-    # Gausian Instrument Profile for given resolution and wavelength
+    # Gaussian Instrument Profile for given resolution and wavelength
     inst_profile = unitary_Gauss(wav_extended[index_mask], wav_val, fwhm)
 
     sum_val = np.sum(inst_profile * flux_2convolve)
@@ -96,16 +104,8 @@ def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
           " {}.\n".format(timeEnd - timeInit))
 
     if plot:
-        plt.figure(1)
-        plt.xlabel(r"wavelength [ nm ])")
-        plt.ylabel(r"flux [counts] ")
-        plt.plot(wav_chip, flux_chip / np.max(flux_chip), color='k',
-                 linestyle="-", label="Original spectra")
-        plt.plot(wav_chip, flux_conv_res / np.max(flux_conv_res), color='r',
-                 linestyle="-", label="Spectrum observed at R={0}.".format(R))
-        plt.legend(loc='best')
-        plt.title(r"Convolution by an Instrument Profile ")
-        plt.show()
+        plot_convolution(wav_chip, flux_chip, flux_conv_res, R)
+
     return wav_chip, flux_conv_res
 
 
@@ -118,6 +118,19 @@ def IPconvolution(wav, flux, chip_limits, R, FWHM_lim=5.0, plot=True,
                   "IPconvolution is still available for compatibility.", DeprecationWarning)
     return ip_convolution(wav, flux, chip_limits, R, fwhm_lim=FWHM_lim, plot=plot,
                           verbose=verbose)
+
+
+def plot_convolution(wav_chip, flux_chip, flux_conv_res, res):
+    plt.figure(1)
+    plt.xlabel(r"Wavelength [ nm ])")
+    plt.ylabel(r"Normalized Flux [counts] ")
+    plt.plot(wav_chip, flux_chip / np.max(flux_chip), color='k',
+             linestyle="-", label="Original")
+    plt.plot(wav_chip, flux_conv_res / np.max(flux_conv_res), color='r',
+             linestyle="--", label="Convolved")
+    plt.legend(loc='best')
+    plt.title(r"Convolution by an Instrument Profile with R={0}".format(res))
+    plt.show()
 
 
 if __name__ == "__main__":

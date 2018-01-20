@@ -76,7 +76,7 @@ def wrapper_fast_convolve(args):
 
 def multi_ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
                          verbose=True, numProcs=None):
-    """Spectral convolution which allows non-equidistance step values."""
+    """Spectral convolution which allows non-equidistant step values."""
     timeInit = dt.now()
 
     # Make sure they are numpy arrays
@@ -111,7 +111,7 @@ def multi_ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
 
     mprocPool.close()
     timeEnd = dt.now()
-    print("Multi-Proc convolution has been compelted in "
+    print("Multi-Proc convolution has been completed in "
           "{} using {}/{} cores.\n".format(timeEnd - timeInit, numProcs,
                                            mprocess.cpu_count()))
 
@@ -188,7 +188,7 @@ if __name__ == "__main__":
     flux = (np.ones_like(wav) - unitary_Gauss(wav, 2045, .6) -
             unitary_Gauss(wav, 2047, .9))
 
-    # range in which to have the  convolved values. Be careful of the edges!
+    # range in which to have the convolved values. Be careful of the edges!
     chip_limits = [2042, 2049]
     R = 2000
     single_convolved_wav, single_convolved_flux = single_ip_convolution(wav, flux, chip_limits, R,
