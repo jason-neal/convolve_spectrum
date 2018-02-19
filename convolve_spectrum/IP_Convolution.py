@@ -10,13 +10,17 @@ from datetime import datetime as dt
 import numpy as np
 from matplotlib import pyplot as plt
 
+from numpy import float64, ndarray
+from typing import List, Tuple, Union
 
-def wav_selector(wav, flux, wav_min, wav_max):
+
+def wav_selector(wav: Union[ndarray, List[float]], flux: ndarray, wav_min: Union[float, int],
+                 wav_max: Union[float, int]) -> Tuple[ndarray, ndarray]:
     """Wavelength selector.
 
     Slice array to within wav_min and wav_max inclusive.
     """
-    assert not(np.isnan(wav_min)), "Lower wavelength band is NaN!"
+    assert not (np.isnan(wav_min)), "Lower wavelength band is NaN!"
     assert not (np.isnan(wav_max)), "Upper wavelength band is NaN!"
 
     wav = np.asarray(wav)
@@ -33,7 +37,7 @@ def wav_selector(wav, flux, wav_min, wav_max):
     return wav_sel, flux_sel
 
 
-def unitary_Gauss(x, center, fwhm):
+def unitary_Gauss(x: ndarray, center: float64, fwhm: float64) -> ndarray:
     """Gaussian_function of area=1.
 
     p[0] = A;
@@ -48,7 +52,8 @@ def unitary_Gauss(x, center, fwhm):
     return result
 
 
-def fast_convolve(wav_val, R, wav_extended, flux_extended, fwhm_lim):
+def fast_convolve(wav_val: float64, R: int, wav_extended: ndarray, flux_extended: ndarray,
+                  fwhm_lim: Union[float, int]) -> float64:
     """IP convolution multiplication step for a single wavelength value."""
     fwhm = wav_val / R
     # Mask of wavelength range within 5 fwhm of wav
@@ -66,8 +71,9 @@ def fast_convolve(wav_val, R, wav_extended, flux_extended, fwhm_lim):
     return sum_val / unitary_val
 
 
-def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
-                   verbose=True):
+def ip_convolution(wav: Union[ndarray, List[int]], flux: Union[ndarray, List[int]], chip_limits: List[int], R: int,
+                   fwhm_lim: float = 5.0, plot: bool = True,
+                   verbose: bool = True) -> Tuple[ndarray, ndarray]:
     """Spectral convolution which allows non-equidistant step values."""
     # Make sure they are numpy arrays
     wav = np.asarray(wav, dtype='float64')
@@ -109,8 +115,8 @@ def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
     return wav_chip, flux_conv_res
 
 
-def IPconvolution(wav, flux, chip_limits, R, FWHM_lim=5.0, plot=True,
-                  verbose=True):
+def IPconvolution(wav: ndarray, flux: ndarray, chip_limits: List[int], R: int, FWHM_lim: float = 5.0, plot: bool = True,
+                  verbose: bool = True) -> Tuple[ndarray, ndarray]:
     """Wrapper of ip_convolution for backwards compatibility.
     Lower case of variable name of FWHM.
     """

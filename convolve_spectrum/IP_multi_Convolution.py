@@ -19,7 +19,11 @@ from tqdm import tqdm
 
 from convolve_spectrum.IP_Convolution import wav_selector, unitary_Gauss, fast_convolve, plot_convolution
 
-def setup_debug(debug_val=False):
+from numpy import ndarray
+from typing import List, Tuple
+
+
+def setup_debug(debug_val: bool = False) -> None:
     """Set debug level."""
     if debug_val:
         logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
@@ -48,8 +52,10 @@ def convolve_spectrum(spec, *args, **kwargs):
     return Spectrum(xaxis=conv[0], flux=conv[1], header=spec.header)
 
 
-def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
-                   verbose=False, numProcs=None, progbar=True, debug=False):
+def ip_convolution(wav: ndarray, flux: ndarray, chip_limits: List[int], R: int, fwhm_lim: float = 5.0,
+                   plot: bool = True,
+                   verbose: bool = False, numProcs: None = None, progbar: bool = True, debug: bool = False) -> Tuple[
+    ndarray, ndarray]:
     """Spectral convolution which allows non-equidistant step values.
 
     Parameters
@@ -125,8 +131,8 @@ def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
     return wav_chip, flux_conv_res
 
 
-def IPconvolution(wav, flux, chip_limits, R, FWHM_lim=5.0, plot=True,
-                  verbose=False, numProcs=None):
+def IPconvolution(wav: ndarray, flux: ndarray, chip_limits: List[int], R: int, FWHM_lim: float = 5.0, plot: bool = True,
+                  verbose: bool = False, numProcs: None = None) -> Tuple[ndarray, ndarray]:
     """Wrapper of ip_convolution for backwards compatibility.
     Lower case of variable name of FWHM.
     """
