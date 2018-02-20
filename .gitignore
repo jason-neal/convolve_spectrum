@@ -1,4 +1,4 @@
-.monkeytype.sqlite3
+monkeytype.sqlite3
 .mypy_cache
 .idea/
 .sync/
