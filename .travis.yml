@@ -33,7 +33,7 @@ install:
 
 script:
   - pytest --cov=. --cov-report term-missing tests/ 
-  - coverage xml
+  - coverage xml -i
 
 after_success:
   - coveralls
