@@ -1,6 +1,6 @@
 # Convolution Code from
 # https://github.com/jason-neal/equanimous-octo-tribble/blob/master/IP_Convolution.py
-# Convolution of spectra to a Instrument profile of resolution R.
+# Convolution of spectra to a Instrument profile of given resolution.
 #
 # The spectra does not have to be equidistant in wavelength.
 
@@ -12,9 +12,8 @@ from datetime import datetime as dt
 
 import matplotlib.pyplot as plt
 import numpy as np
-from convolve_spectrum.IP_Convolution import ip_convolution as single_ip_convolution
-from convolve_spectrum.IP_Convolution import unitary_Gauss
-from convolve_spectrum.IP_multi_Convolution import (
+from convolve_spectrum import unitary_Gauss
+from convolve_spectrum.ip_convolution import (
     ip_convolution as multi_ip_convolution
 )
 
@@ -27,16 +26,16 @@ if __name__ == "__main__":
 
     # range in which to have the convolved values. Be careful of the edges!
     chip_limits = [2042, 2049]
-    R = 2000
+    resolution = 2000
 
     time_init = dt.now()
-    single_convolved_wav, single_convolved_flux = single_ip_convolution(
-        wav, flux, chip_limits, R, fwhm_lim=5.0, plot=False, verbose=True
+    single_convolved_wav, single_convolved_flux = multi_ip_convolution(
+        wav, flux, chip_limits, resolution, fwhm_lim=5.0, plot=False, verbose=True, numProcs=1,
     )
     time_end = dt.now()
 
     multi_convolved_wav, multi_convolved_flux = multi_ip_convolution(
-        wav, flux, chip_limits, R, fwhm_lim=5.0, plot=False, verbose=True
+        wav, flux, chip_limits, resolution, fwhm_lim=5.0, plot=False, verbose=True
     )
     time_end_multi = dt.now()
 

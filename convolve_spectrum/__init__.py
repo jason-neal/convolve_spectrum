@@ -1,3 +1,4 @@
-__all__ = ["IP_Convolution", "IP_multi_Convolution"]
-from .IP_Convolution import wav_selector, fast_convolve, unitary_Gauss
-from .IP_multi_Convolution import ip_convolution, convolve_spectrum
+__all__ = ["ip_convolution.py"]
+from convolve_spectrum.ip_convolution import ip_convolution
+from convolve_spectrum.utils import wav_selector, unitary_Gauss
+

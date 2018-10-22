@@ -4,11 +4,12 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from convolve_spectrum.IP_multi_Convolution import ip_convolution, unitary_Gauss
+from convolve_spectrum.ip_convolution import ip_convolution
+from convolve_spectrum import unitary_Gauss
 
 
 def main():
-    # fwhm = lambda/R
+    # fwhm = lambda/resolution
     fwhm = 2046 / 100000
     # Starting spectrum
     wav = np.linspace(2040, 2050, 20000)
@@ -22,38 +23,38 @@ def main():
     chip_limits = [2042, 2049]
 
     # Convolution to 80k
-    R = 80000
+    resolution = 80000
     wav_80k, flux_80k = ip_convolution(
-        wav, flux, chip_limits, R, fwhm_lim=5.0, plot=False
+        wav, flux, chip_limits, resolution, fwhm_lim=5.0, plot=False
     )
 
     # Convolution to 50k
-    R = 50000
+    resolution = 50000
     wav_50k, flux_50k = ip_convolution(
-        wav, flux, chip_limits, R, fwhm_lim=5.0, plot=False
+        wav, flux, chip_limits, resolution, fwhm_lim=5.0, plot=False
     )
 
     wav_80k_50k, flux_80k_50k = ip_convolution(
-        wav_80k, flux_80k, chip_limits, R, fwhm_lim=5.0, plot=False
+        wav_80k, flux_80k, chip_limits, resolution, fwhm_lim=5.0, plot=False
     )
 
     # Convolution to 20k
-    R = 20000
+    resolution = 20000
     wav_80k_20k, flux_80k_20k = ip_convolution(
-        wav_80k, flux_80k, chip_limits, R, fwhm_lim=5.0, plot=False
+        wav_80k, flux_80k, chip_limits, resolution, fwhm_lim=5.0, plot=False
     )
 
     wav_50k_20k, flux_50k_20k = ip_convolution(
-        wav_50k, flux_50k, chip_limits, R, fwhm_lim=5.0, plot=False
+        wav_50k, flux_50k, chip_limits, resolution, fwhm_lim=5.0, plot=False
     )
 
     wav_80k_50k_20k, flux_80k_50k_20k = ip_convolution(
-        wav_80k_50k, flux_80k_50k, chip_limits, R, fwhm_lim=5.0, plot=False
+        wav_80k_50k, flux_80k_50k, chip_limits, resolution, fwhm_lim=5.0, plot=False
     )
 
     # Convolution straight to 20000
     wav_20k, flux_20k = ip_convolution(
-        wav, flux, chip_limits, R, fwhm_lim=5.0, plot=False
+        wav, flux, chip_limits, resolution, fwhm_lim=5.0, plot=False
     )
 
     # Plot the results
@@ -68,34 +69,34 @@ def main():
         flux_80k / np.max(flux_80k),
         color="r",
         linestyle="-.",
-        label="R=80k-20k",
+        label="resolution=80k-20k",
     )
     plt.plot(
-        wav_50k, flux_50k / np.max(flux_50k), color="b", linestyle="--", label="R=50k"
+        wav_50k, flux_50k / np.max(flux_50k), color="b", linestyle="--", label="resolution=50k"
     )
     plt.plot(
         wav_80k_20k,
         flux_80k_20k / np.max(flux_80k_20k),
         color="r",
         linestyle="-",
-        label="R=80k-20k",
+        label="resolution=80k-20k",
     )
     plt.plot(
         wav_50k_20k,
         flux_50k_20k / np.max(flux_50k_20k),
         color="b",
         linestyle="-",
-        label="R=50k20k",
+        label="resolution=50k20k",
     )
     plt.plot(
         wav_80k_50k_20k,
         flux_80k_50k_20k / np.max(flux_80k_50k_20k),
         color="m",
         linestyle="-",
-        label="R=80k-50k-20k",
+        label="resolution=80k-50k-20k",
     )
     plt.plot(
-        wav_20k, flux_20k / np.max(flux_20k), color="c", linestyle="-", label="R=20k"
+        wav_20k, flux_20k / np.max(flux_20k), color="c", linestyle="-", label="resolution=20k"
     )
     plt.legend(loc="best")
     plt.title(r"Convolution by different Instrument Profiles")
