@@ -1,4 +1,5 @@
 import os
+import sys
 
 from setuptools import find_packages, setup
 
@@ -18,7 +19,7 @@ base_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)))
 
 setup(
     name="convolve_spectrum",
-    version="0.2",
+    version="0.3",
     description="Spectrum convolution that handles uneven wavelengths.",
     long_description=long_description,
     url="https://github.com/jason-neal/convolve_spectrum",
@@ -46,7 +47,6 @@ setup(
     # Alternatively, if you want to distribute just a my_module.py, uncomment
     # this:
     #   py_modules=["my_module"],
-
     # List run-time dependencies here.  These will be installed by pip when
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
