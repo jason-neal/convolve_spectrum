@@ -11,7 +11,6 @@ import warnings
 
 import multiprocess as mprocess
 import numpy as np
-from spectrum_overload import Spectrum
 from tqdm import tqdm
 
 from convolve_spectrum.utils import plot_convolution, wav_selector, unitary_Gauss
@@ -24,17 +23,6 @@ def wrapper_fast_convolve(args):
     arguments.
     """
     return fast_convolve(*args)
-
-
-def convolve_spectrum(spec, *args, **kwargs):
-    """Convolve a spectrum using ip_convolution.
-
-    ip_convolution(wav, flux, chip_limits, resolution, fwhm_lim=5.0, plot=True,
-                  numProcs=None, progbar=True)
-    """
-    spec = spec.copy()
-    conv = ip_convolution(spec.xaxis, spec.flux, *args, **kwargs)
-    return Spectrum(xaxis=conv[0], flux=conv[1], header=spec.header)
 
 
 def ip_convolution(
