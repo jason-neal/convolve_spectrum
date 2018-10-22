@@ -17,14 +17,24 @@ import numpy as np
 from spectrum_overload import Spectrum
 from tqdm import tqdm
 
-from convolve_spectrum.IP_Convolution import wav_selector, unitary_Gauss, fast_convolve, plot_convolution
+from convolve_spectrum.IP_Convolution import (
+    wav_selector,
+    unitary_Gauss,
+    fast_convolve,
+    plot_convolution,
+)
+
 
 def setup_debug(debug_val=False):
     """Set debug level."""
     if debug_val:
-        logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
+        logging.basicConfig(
+            level=logging.DEBUG, format="%(asctime)s %(levelname)s %(message)s"
+        )
     else:
-        logging.basicConfig(level=logging.WARNING, format='%(asctime)s %(levelname)s %(message)s')
+        logging.basicConfig(
+            level=logging.WARNING, format="%(asctime)s %(levelname)s %(message)s"
+        )
     return None
 
 
@@ -48,8 +58,18 @@ def convolve_spectrum(spec, *args, **kwargs):
     return Spectrum(xaxis=conv[0], flux=conv[1], header=spec.header)
 
 
-def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
-                   verbose=False, numProcs=None, progbar=True, debug=False):
+def ip_convolution(
+    wav,
+    flux,
+    chip_limits,
+    R,
+    fwhm_lim=5.0,
+    plot=True,
+    verbose=False,
+    numProcs=None,
+    progbar=True,
+    debug=False,
+):
     """Spectral convolution which allows non-equidistant step values.
 
     Parameters
@@ -77,17 +97,18 @@ def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
      """
     if verbose:
         # Verbose was turned on when doesn't do anything.
-        logging.warning("ip_convolution's unused 'verbose' parameter was enabled."
-                        " It is unused/depreciated so should be avoided.")
+        logging.warning(
+            "ip_convolution's unused 'verbose' parameter was enabled."
+            " It is unused/depreciated so should be avoided."
+        )
 
     setup_debug(debug_val=debug)
     # Turn into numpy arrays
-    wav = np.asarray(wav, dtype='float64')
-    flux = np.asarray(flux, dtype='float64')
+    wav = np.asarray(wav, dtype="float64")
+    flux = np.asarray(flux, dtype="float64")
 
     timeInit = dt.now()
-    wav_chip, flux_chip = wav_selector(wav, flux, chip_limits[0],
-                                       chip_limits[1])
+    wav_chip, flux_chip = wav_selector(wav, flux, chip_limits[0], chip_limits[1])
     # We need to calculate the fwhm at this value in order to set the starting
     # point for the convolution
     fwhm_min = wav_chip[0] / R  # fwhm at the extremes of vector
@@ -106,18 +127,21 @@ def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
 
     mprocPool = mprocess.Pool(processes=numProcs)
 
-    args_generator = tqdm([[wav, R, wav_ext, flux_ext, fwhm_lim]
-                           for wav in wav_chip], disable=(not progbar))
+    args_generator = tqdm(
+        [[wav, R, wav_ext, flux_ext, fwhm_lim] for wav in wav_chip],
+        disable=(not progbar),
+    )
 
-    flux_conv_res = np.array(mprocPool.map(wrapper_fast_convolve,
-                                           args_generator))
+    flux_conv_res = np.array(mprocPool.map(wrapper_fast_convolve, args_generator))
 
     mprocPool.close()
     timeEnd = dt.now()
-    logging.debug("Multi-Proc convolution has been completed in "
-                  "{} using {}/{} cores.\n".format(timeEnd - timeInit,
-                                                   numProcs,
-                                                   mprocess.cpu_count()))
+    logging.debug(
+        "Multi-Proc convolution has been completed in "
+        "{} using {}/{} cores.\n".format(
+            timeEnd - timeInit, numProcs, mprocess.cpu_count()
+        )
+    )
 
     if plot:
         plot_convolution(wav_chip, flux_chip, flux_conv_res, R)
@@ -125,26 +149,39 @@ def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
     return wav_chip, flux_conv_res
 
 
-def IPconvolution(wav, flux, chip_limits, R, FWHM_lim=5.0, plot=True,
-                  verbose=False, numProcs=None):
+def IPconvolution(
+    wav, flux, chip_limits, R, FWHM_lim=5.0, plot=True, verbose=False, numProcs=None
+):
     """Wrapper of ip_convolution for backwards compatibility.
     Lower case of variable name of FWHM.
     """
-    warnings.warn("IPconvolution is depreciated, should use ip_convolution instead."
-                  "IPconvolution is still available for compatibility.", DeprecationWarning)
-    return ip_convolution(wav, flux, chip_limits, R, fwhm_lim=FWHM_lim, plot=plot,
-                          verbose=verbose, numProcs=numProcs)
+    warnings.warn(
+        "IPconvolution is depreciated, should use ip_convolution instead."
+        "IPconvolution is still available for compatibility.",
+        DeprecationWarning,
+    )
+    return ip_convolution(
+        wav,
+        flux,
+        chip_limits,
+        R,
+        fwhm_lim=FWHM_lim,
+        plot=plot,
+        verbose=verbose,
+        numProcs=numProcs,
+    )
 
 
 if __name__ == "__main__":
     # Example usage of this convolution
     wav = np.linspace(2040, 2050, 30000)
-    flux = (np.ones_like(wav) - unitary_Gauss(wav, 2045, .6) -
-            unitary_Gauss(wav, 2047, .9))
+    flux = (
+        np.ones_like(wav) - unitary_Gauss(wav, 2045, .6) - unitary_Gauss(wav, 2047, .9)
+    )
     # Range in which to have the convolved values. Be careful of the edges!
     chip_limits = [2042, 2049]
 
     R = 1000
-    convolved_wav, convolved_flux = ip_convolution(wav, flux, chip_limits, R,
-                                                   fwhm_lim=5.0, plot=True,
-                                                   verbose=True)
+    convolved_wav, convolved_flux = ip_convolution(
+        wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True, verbose=True
+    )

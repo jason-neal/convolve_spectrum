@@ -16,7 +16,7 @@ def wav_selector(wav, flux, wav_min, wav_max):
 
     Slice array to within wav_min and wav_max inclusive.
     """
-    assert not(np.isnan(wav_min)), "Lower wavelength band is NaN!"
+    assert not (np.isnan(wav_min)), "Lower wavelength band is NaN!"
     assert not (np.isnan(wav_max)), "Upper wavelength band is NaN!"
 
     wav = np.asarray(wav)
@@ -52,8 +52,9 @@ def fast_convolve(wav_val, R, wav_extended, flux_extended, fwhm_lim):
     """IP convolution multiplication step for a single wavelength value."""
     fwhm = wav_val / R
     # Mask of wavelength range within 5 fwhm of wav
-    index_mask = ((wav_extended > (wav_val - fwhm_lim * fwhm)) &
-                  (wav_extended < (wav_val + fwhm_lim * fwhm)))
+    index_mask = (wav_extended > (wav_val - fwhm_lim * fwhm)) & (
+        wav_extended < (wav_val + fwhm_lim * fwhm)
+    )
 
     flux_2convolve = flux_extended[index_mask]
     # Gaussian Instrument Profile for given resolution and wavelength
@@ -66,16 +67,14 @@ def fast_convolve(wav_val, R, wav_extended, flux_extended, fwhm_lim):
     return sum_val / unitary_val
 
 
-def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
-                   verbose=True):
+def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True, verbose=True):
     """Spectral convolution which allows non-equidistant step values."""
     # Make sure they are numpy arrays
-    wav = np.asarray(wav, dtype='float64')
-    flux = np.asarray(flux, dtype='float64')
+    wav = np.asarray(wav, dtype="float64")
+    flux = np.asarray(flux, dtype="float64")
 
     timeInit = dt.now()
-    wav_chip, flux_chip = wav_selector(wav, flux, chip_limits[0],
-                                       chip_limits[1])
+    wav_chip, flux_chip = wav_selector(wav, flux, chip_limits[0], chip_limits[1])
     # We need to calculate the fwhm at this value in order to set the starting
     # point for the convolution
     fwhm_min = wav_chip[0] / R  # fwhm at the extremes of vector
@@ -100,8 +99,10 @@ def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
             print("Resolution Convolution at {0}%%...".format(counter))
 
     timeEnd = dt.now()
-    print("Single-Process convolution has been completed in"
-          " {}.\n".format(timeEnd - timeInit))
+    print(
+        "Single-Process convolution has been completed in"
+        " {}.\n".format(timeEnd - timeInit)
+    )
 
     if plot:
         plot_convolution(wav_chip, flux_chip, flux_conv_res, R)
@@ -109,26 +110,39 @@ def ip_convolution(wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True,
     return wav_chip, flux_conv_res
 
 
-def IPconvolution(wav, flux, chip_limits, R, FWHM_lim=5.0, plot=True,
-                  verbose=True):
+def IPconvolution(wav, flux, chip_limits, R, FWHM_lim=5.0, plot=True, verbose=True):
     """Wrapper of ip_convolution for backwards compatibility.
     Lower case of variable name of FWHM.
     """
-    warnings.warn("IPconvolution is depreciated, should use ip_convolution instead."
-                  "IPconvolution is still available for compatibility.", DeprecationWarning)
-    return ip_convolution(wav, flux, chip_limits, R, fwhm_lim=FWHM_lim, plot=plot,
-                          verbose=verbose)
+    warnings.warn(
+        "IPconvolution is depreciated, should use ip_convolution instead."
+        "IPconvolution is still available for compatibility.",
+        DeprecationWarning,
+    )
+    return ip_convolution(
+        wav, flux, chip_limits, R, fwhm_lim=FWHM_lim, plot=plot, verbose=verbose
+    )
 
 
 def plot_convolution(wav_chip, flux_chip, flux_conv_res, res):
     plt.figure(1)
     plt.xlabel(r"Wavelength [ nm ])")
     plt.ylabel(r"Normalized Flux [counts] ")
-    plt.plot(wav_chip, flux_chip / np.max(flux_chip), color='k',
-             linestyle="-", label="Original")
-    plt.plot(wav_chip, flux_conv_res / np.max(flux_conv_res), color='r',
-             linestyle="--", label="Convolved")
-    plt.legend(loc='best')
+    plt.plot(
+        wav_chip,
+        flux_chip / np.max(flux_chip),
+        color="k",
+        linestyle="-",
+        label="Original",
+    )
+    plt.plot(
+        wav_chip,
+        flux_conv_res / np.max(flux_conv_res),
+        color="r",
+        linestyle="--",
+        label="Convolved",
+    )
+    plt.legend(loc="best")
     plt.title(r"Convolution by an Instrument Profile with R={0}".format(res))
     plt.show()
 
@@ -136,12 +150,13 @@ def plot_convolution(wav_chip, flux_chip, flux_conv_res, res):
 if __name__ == "__main__":
     # Example usage of this convolution
     wav = np.linspace(2040, 2050, 30000)
-    flux = (np.ones_like(wav) - unitary_Gauss(wav, 2045, .6) -
-            unitary_Gauss(wav, 2047, .9))
+    flux = (
+        np.ones_like(wav) - unitary_Gauss(wav, 2045, .6) - unitary_Gauss(wav, 2047, .9)
+    )
     # Range in which to have the convolved values. Be careful of the edges!
     chip_limits = [2042, 2049]
 
     R = 1000
-    convolved_wav, convolved_flux = ip_convolution(wav, flux, chip_limits, R,
-                                                   fwhm_lim=5.0, plot=True,
-                                                   verbose=True)
+    convolved_wav, convolved_flux = ip_convolution(
+        wav, flux, chip_limits, R, fwhm_lim=5.0, plot=True, verbose=True
+    )
