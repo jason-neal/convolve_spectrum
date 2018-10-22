@@ -2,20 +2,25 @@ import os
 
 from setuptools import find_packages, setup
 
-# from setuptools.command.test import test as TestCommand
+if sys.version_info < (3, 6):
+    error = """
+BEANS does not support Python 2.x, 3.0, 3.1, 3.2, 3.3, 3.4 or 3.5.
+Python 3.6 and above is required. Attempted with {}.
+This may be due to an out of date pip.
+Make sure you have pip >= 9.0.1.
+""".format(
+        sys.version
+    )
+    sys.exit(error)
 
 long_description = " "
 base_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)))
 
 setup(
     name="convolve_spectrum",
-    # Versions should comply with PEP440.  For a discussion on single-sourcing
-    # the version across setup.py and the project code, see
-    # https://packaging.python.org/en/latest/single_source_version.html
     version="0.2",
     description="Spectrum convolution that handles uneven wavelengths.",
     long_description=long_description,
-    # The project's main homepage.
     url="https://github.com/jason-neal/convolve_spectrum",
     author="Jason Neal",
     author_email="jason.neal@astro.up.pt",
@@ -27,10 +32,7 @@ setup(
         "Topic :: Scientific/Engineering :: Astronomy",
         "Topic :: Scientific/Engineering :: Physics",
         "License :: OSI Approved :: MIT License",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Natural Language :: English",
@@ -44,7 +46,7 @@ setup(
     # Alternatively, if you want to distribute just a my_module.py, uncomment
     # this:
     #   py_modules=["my_module"],
-    # py_modules=["spectrum/Spectrum"],
+
     # List run-time dependencies here.  These will be installed by pip when
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
