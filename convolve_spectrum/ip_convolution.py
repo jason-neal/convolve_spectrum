@@ -73,7 +73,6 @@ def ip_convolution(
     wav = np.asarray(wav, dtype="float64")
     flux = np.asarray(flux, dtype="float64")
 
-
     wav_chip, flux_chip = wav_selector(wav, flux, chip_limits[0], chip_limits[1])
     # We need to calculate the fwhm at this value in order to set the starting
     # point for the convolution
@@ -84,7 +83,6 @@ def ip_convolution(
     wav_min = wav_chip[0] - fwhm_lim * fwhm_min
     wav_max = wav_chip[-1] + fwhm_lim * fwhm_max
     wav_ext, flux_ext = wav_selector(wav, flux, wav_min, wav_max)
-
 
     # Multiprocessing part
     if numProcs is None:
@@ -108,7 +106,8 @@ def ip_convolution(
 
 
 def IPconvolution(
-    wav, flux, chip_limits, resolution, FWHM_lim=5.0, plot=True, numProcs=None, **kwargs):
+    wav, flux, chip_limits, resolution, FWHM_lim=5.0, plot=True, numProcs=None, **kwargs
+):
     """Wrapper of ip_convolution for backwards compatibility.
     Lower case of variable name of FWHM.
     """
@@ -124,7 +123,8 @@ def IPconvolution(
         resolution,
         fwhm_lim=FWHM_lim,
         plot=plot,
-        numProcs=numProcs, **kwargs,
+        numProcs=numProcs,
+        **kwargs,
     )
 
 
@@ -158,6 +158,5 @@ if __name__ == "__main__":
 
     resolution = 1000
     convolved_wav, convolved_flux = ip_convolution(
-        wav, flux, chip_limits, resolution, fwhm_lim=5.0, plot=True,
+        wav, flux, chip_limits, resolution, fwhm_lim=5.0, plot=True
     )
-

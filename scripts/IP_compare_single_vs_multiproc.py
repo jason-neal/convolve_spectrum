@@ -13,9 +13,7 @@ from datetime import datetime as dt
 import matplotlib.pyplot as plt
 import numpy as np
 from convolve_spectrum import unitary_Gauss
-from convolve_spectrum.ip_convolution import (
-    ip_convolution as multi_ip_convolution
-)
+from convolve_spectrum.ip_convolution import ip_convolution as multi_ip_convolution
 
 if __name__ == "__main__":
     # Example usage of this convolution
@@ -30,7 +28,14 @@ if __name__ == "__main__":
 
     time_init = dt.now()
     single_convolved_wav, single_convolved_flux = multi_ip_convolution(
-        wav, flux, chip_limits, resolution, fwhm_lim=5.0, plot=False, verbose=True, numProcs=1,
+        wav,
+        flux,
+        chip_limits,
+        resolution,
+        fwhm_lim=5.0,
+        plot=False,
+        verbose=True,
+        numProcs=1,
     )
     time_end = dt.now()
 

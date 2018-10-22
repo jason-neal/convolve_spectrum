@@ -72,7 +72,11 @@ def main():
         label="resolution=80k-20k",
     )
     plt.plot(
-        wav_50k, flux_50k / np.max(flux_50k), color="b", linestyle="--", label="resolution=50k"
+        wav_50k,
+        flux_50k / np.max(flux_50k),
+        color="b",
+        linestyle="--",
+        label="resolution=50k",
     )
     plt.plot(
         wav_80k_20k,
@@ -96,7 +100,11 @@ def main():
         label="resolution=80k-50k-20k",
     )
     plt.plot(
-        wav_20k, flux_20k / np.max(flux_20k), color="c", linestyle="-", label="resolution=20k"
+        wav_20k,
+        flux_20k / np.max(flux_20k),
+        color="c",
+        linestyle="-",
+        label="resolution=20k",
     )
     plt.legend(loc="best")
     plt.title(r"Convolution by different Instrument Profiles")
