@@ -1,8 +1,9 @@
 import numpy as np
 import pytest
-from hypothesis import given, strategies as st
 
-from convolve_spectrum import wav_selector
+from convolve_spectrum.utils import wav_selector
+from hypothesis import given
+from hypothesis import strategies as st
 
 
 @given(st.lists(st.floats()), st.floats(allow_nan=False), st.floats(allow_nan=False))

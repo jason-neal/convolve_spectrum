@@ -13,7 +13,7 @@ import multiprocess as mprocess
 import numpy as np
 from tqdm import tqdm
 
-from convolve_spectrum.utils import plot_convolution, wav_selector, unitary_Gauss
+from convolve_spectrum.utils import plot_convolution, unitary_Gauss, wav_selector
 
 
 def wrapper_fast_convolve(args):
@@ -91,29 +91,6 @@ def ip_convolution(
         plot_convolution(wav_chip, flux_chip, flux_conv_res, resolution)
 
     return wav_chip, flux_conv_res
-
-
-def IPconvolution(
-    wav, flux, chip_limits, resolution, FWHM_lim=5.0, plot=True, numProcs=None, **kwargs
-):
-    """Wrapper of ip_convolution for backwards compatibility.
-    Lower case of variable name of FWHM.
-    """
-    warnings.warn(
-        "IPconvolution is depreciated, should use ip_convolution instead."
-        "IPconvolution is still available for compatibility.",
-        DeprecationWarning,
-    )
-    return ip_convolution(
-        wav,
-        flux,
-        chip_limits,
-        resolution,
-        fwhm_lim=FWHM_lim,
-        plot=plot,
-        numProcs=numProcs,
-        **kwargs,
-    )
 
 
 def fast_convolve(wav_val, resolution, wav_extended, flux_extended, fwhm_lim):

@@ -4,8 +4,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from convolve_spectrum.ip_convolution import ip_convolution
 from convolve_spectrum import unitary_Gauss
+from convolve_spectrum.ip_convolution import ip_convolution
 
 
 def main():

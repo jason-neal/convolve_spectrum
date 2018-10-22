@@ -1,8 +1,7 @@
 import numpy as np
 import pytest
 
-from convolve_spectrum.ip_convolution import ip_convolution, fast_convolve
-from convolve_spectrum.ip_convolution import IPconvolution
+from convolve_spectrum.ip_convolution import fast_convolve, ip_convolution
 
 
 def test_fast_convolution():
@@ -11,8 +10,6 @@ def test_fast_convolution():
     c = np.ones_like(b)
     resolution = 50000
     for a_val in a:
-        # print(type(fast_convolve(a_val, resolution, b, c, 5)))
-        # print(isinstance(fast_convolve(a_val, resolution, b, c, 5), np.float64))
         assert isinstance(fast_convolve(a_val, resolution, b, c, 5), np.float64)
         assert (
             fast_convolve(a_val, resolution, b, c, 5) == 1
@@ -31,22 +28,6 @@ def test_ip_convolution():
     new_wav, new_flux = ip_convolution(wave, flux, chip_limits, resolution, plot=False)
     assert np.all(new_flux == [1, 1, 1, 1, 1])
     assert np.all(new_wav == [2, 3, 5, 6, 7])
-
-
-def test_ip_wrapper():
-    a = np.linspace(2130, 2170, 1024)
-    b = np.linspace(2100, 2200, 1024)
-    assert np.allclose(
-        IPconvolution(a, b, [2140, 2165], resolution=50000, plot=False),
-        ip_convolution(a, b, [2140, 2165], resolution=50000, plot=False),
-    )
-
-
-def test_IPconvolution_depreciation():
-    a = np.linspace(2130, 2170, 1024)
-    b = np.linspace(2100, 2200, 1024)
-    with pytest.deprecated_call():
-        IPconvolution(a, b, [2140, 2165], resolution=50000, plot=False)
 
 
 if __name__ == "__main__":
