@@ -10,7 +10,6 @@ matrix:
       sudo: true    # travis-ci/travis-ci#9069
     - python: 3.6
       dist: trusty
-      sudo: false
 
 cache:
   directories:
