@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 
 if sys.version_info < (3, 6):
     error = """
-BEANS does not support Python 2.x, 3.0, 3.1, 3.2, 3.3, 3.4 or 3.5.
+convolve_spectrum does not support Python 2.x, 3.0, 3.1, 3.2, 3.3, 3.4 or 3.5.
 Python 3.6 and above is required. Attempted with {}.
 This may be due to an out of date pip.
 Make sure you have pip >= 9.0.1.
@@ -34,7 +34,6 @@ setup(
         "Topic :: Scientific/Engineering :: Physics",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Natural Language :: English",
     ],
@@ -47,7 +46,7 @@ setup(
     # Alternatively, if you want to distribute just a my_module.py, uncomment
     # this:
     #   py_modules=["my_module"],
-    # List run-time dependencies here.  These will be installed by pip when
+    # List run-time dependencies here. These will be installed by pip when
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
