@@ -2,13 +2,10 @@
 
 [![Build Status](https://travis-ci.org/jason-neal/convolve_spectrum.svg?branch=master)](https://travis-ci.org/jason-neal/convolve_spectrum)[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c85dfdb9736f4b978566241354e3050b)](https://www.codacy.com/app/jason-neal/convolve_spectrum?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jason-neal/convolve_spectrum&amp;utm_campaign=Badge_Grade)[![Coverage Status](https://coveralls.io/repos/github/jason-neal/convolve_spectrum/badge.svg?branch=master)](https://coveralls.io/github/jason-neal/convolve_spectrum?branch=master)
 
-- Convolve a spectrum by a IP of a given Resolution.
-- Does not need a equidistant wavelength axis.
-- Assumes a gaussian IP profile
-
-
-There is a multiprocessing version and a normal (slower) version.
-Calculates the IP for every pixel/wavelength value individually (embarrassingly parallel).
+- Convolve a spectrum by a Gaussian instrument profile with a given Resolution `R`.
+- Does not need a equidistant wavelength steps.
+- Uses multiprocessing to speed up the convolution.
+- Calculates the IP for every pixel/wavelength individually (but this is embarrassingly parallel).
 
 ## Installation
 ```
@@ -17,6 +14,7 @@ Calculates the IP for every pixel/wavelength value individually (embarrassingly 
     pip install -r requirements/requirements.txt
     python setup.py install
 ```
+
 ## Usage
 ```
     from convolve_spectrum import ipconvolution
