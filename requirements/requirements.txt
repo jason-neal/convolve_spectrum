@@ -1,5 +1,4 @@
 matplotlib>=2
-multiprocess==0.70.9
-numpy==1.18.1
-tqdm==4.41.1
-
+multiprocess
+numpy
+tqdm
