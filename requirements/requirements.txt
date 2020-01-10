@@ -2,4 +2,3 @@ matplotlib>=2
 multiprocess
 numpy
 tqdm
-
