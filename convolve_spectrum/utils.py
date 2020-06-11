@@ -34,9 +34,7 @@ def unitary_Gauss(x, center, fwhm):
     sigma = np.abs(fwhm) / (2 * np.sqrt(2 * np.log(2)))
     Amp = 1.0 / (sigma * np.sqrt(2 * np.pi))
     tau = -((x - center) ** 2) / (2 * (sigma ** 2))
-    result = Amp * np.exp(tau)
-
-    return result
+    return Amp * np.exp(tau)
 
 
 def plot_convolution(wav_chip, flux_chip, flux_conv_res, res):
