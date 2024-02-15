@@ -39,5 +39,5 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest --cov=spectrum_overload --cov-report term-missing --durations 10 -W error::UserWarning
+        pytest --cov=convolve_spectrum --cov-report term-missing --durations 10 -W error::UserWarning
         coverage xml -i
